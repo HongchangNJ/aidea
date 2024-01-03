@@ -105,6 +105,8 @@ class _AppScaffoldState extends State<AppScaffold> {
           ),
           route: '/creative-draw',
         ),
+
+      if(Ability().enableMinePage)
       BottomNavigationBarConfig(
         builder: (index, customColors) => createAnimatedNavBarItem(
           icon: Icons.manage_accounts_outlined,

@@ -80,6 +80,11 @@ class Ability {
     return !capabilities.disableChat;
   }
 
+  /// 是否禁用我的页面
+  bool get enableMinePage {
+    return !capabilities.disableMinePage;
+  }
+
   /// 是否支持 OpenAI
   bool get enableOpenAI {
     return capabilities.openaiEnabled &&

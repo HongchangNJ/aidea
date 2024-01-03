@@ -45,6 +45,9 @@ class Capabilities {
   /// 服务状态页
   final String serviceStatusPage;
 
+  // 是否禁用我的页面
+  final bool disableMinePage;
+
   Capabilities({
     required this.applePayEnabled,
     required this.otherPayEnabled,
@@ -60,6 +63,7 @@ class Capabilities {
     this.disableCreationIsland = false,
     this.disableDigitalHuman = false,
     this.disableChat = false,
+    this.disableMinePage = false,
     this.serviceStatusPage = '',
   });
 
@@ -81,6 +85,7 @@ class Capabilities {
       disableCreationIsland: json['disable_creation_island'] ?? false,
       disableDigitalHuman: json['disable_digital_human'] ?? false,
       disableChat: json['disable_chat'] ?? false,
+      disableMinePage: json['disable_mine_page'] ?? false,
       serviceStatusPage: json['service_status_page'] ?? '',
     );
   }
@@ -102,6 +107,7 @@ class Capabilities {
       'disable_digital_human': disableDigitalHuman,
       'disable_chat': disableChat,
       'service_status_page': serviceStatusPage,
+      'disable_mine_page': disableMinePage
     };
   }
 }

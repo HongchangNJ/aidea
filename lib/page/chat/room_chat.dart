@@ -285,10 +285,10 @@ class _RoomChatPageState extends State<RoomChatPage> {
           if (loadedMessages.isEmpty) {
             return Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-              child: EmptyPreview(
+              /*child: EmptyPreview(
                 examples: room.examples ?? [],
                 onSubmit: _handleSubmit,
-              ),
+              ),*/
             );
           }
 

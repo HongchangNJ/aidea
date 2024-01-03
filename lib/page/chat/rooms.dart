@@ -76,7 +76,7 @@ class _RoomsPageState extends State<RoomsPage> {
                     EnhancedPopupMenu(
                       items: [
                         EnhancedPopupMenuItem(
-                          title: '创建数字人',
+                          title: '发起单聊',
                           icon: Icons.person_add_alt_outlined,
                           onTap: (p0) {
                             context.push('/create-room').whenComplete(() {
@@ -141,10 +141,10 @@ class _RoomsPageState extends State<RoomsPage> {
                           ),
                         ],
                       ),
-                backgroundImage: Image.asset(
+                /*backgroundImage: Image.asset(
                   customColors.appBarBackgroundImageForRoom!,
                   fit: BoxFit.cover,
-                ),
+                ),*/
                 child: RefreshIndicator(
                   color: customColors.linkColor,
                   onRefresh: () async {
