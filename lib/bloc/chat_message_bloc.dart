@@ -344,10 +344,7 @@ class ChatMessageBloc extends BlocExt<ChatMessageEvent, ChatMessageState> {
               final quotaConsumed = cmd['quota_consumed'] ?? 0;
               final tokenConsumed = cmd['token'] ?? 0;
 
-              final info = cmd['info'] ?? '';
-              if (info != '') {
-                waitMessage.setExtra({'info': info});
-              }
+              waitMessage.setExtra(cmd);
 
               if (quotaConsumed == 0 && tokenConsumed == 0) {
                 continue;

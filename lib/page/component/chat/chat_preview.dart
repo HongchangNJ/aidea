@@ -207,6 +207,20 @@ class _ChatPreviewState extends State<ChatPreview> {
     final extra = index == 0 ? message.decodeExtra() : null;
     final extraInfo = extra != null ? extra['info'] ?? '' : '';
 
+    final statFirstLetterRespMS =
+        (extra != null && extra['first_letter_resp_microseconds'] != null)
+            ? extra['first_letter_resp_microseconds'] / 1000
+            : 0;
+    final statTotalRespMS =
+        (extra != null && extra['total_resp_microseconds'] != null)
+            ? extra['total_resp_microseconds'] / 1000
+            : 0;
+    final costInfo = [
+      if (statFirstLetterRespMS > 0)
+        '首字符耗时 ${durationFormat(statFirstLetterRespMS)}',
+      if (statTotalRespMS > 0) '总耗时 ${durationFormat(statTotalRespMS)}'
+    ].join('，');
+
     // 普通消息
     return Align(
       alignment:
@@ -340,14 +354,37 @@ class _ChatPreviewState extends State<ChatPreview> {
                                           if (message.quotaConsumed != null &&
                                               message.quotaConsumed! > 0)
                                             Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                const Icon(Icons.check_circle,
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 5),
+                                                  child: const Icon(
+                                                    Icons.check_circle,
                                                     size: 12,
-                                                    color: Colors.green),
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
                                                 const SizedBox(width: 5),
                                                 Expanded(
                                                   child: Text(
-                                                    '共 ${message.tokenConsumed} 个 Token， 消耗 ${message.quotaConsumed} 个智慧果',
+                                                    '共 ${message.tokenConsumed} 个 Token， 消耗 ${message.quotaConsumed} 个智慧果${costInfo != '' ? '；$costInfo' : ''}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: customColors
+                                                          .weakTextColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          else if (costInfo != '')
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    costInfo,
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: customColors
@@ -463,6 +500,14 @@ class _ChatPreviewState extends State<ChatPreview> {
         ),
       ),
     );
+  }
+
+  String durationFormat(double duration) {
+    if (duration < 1000) {
+      return '${duration.toStringAsFixed(2)} ms';
+    }
+
+    return '${(duration / 1000).toStringAsFixed(2)} s';
   }
 
   Widget buildErrorIndicator(

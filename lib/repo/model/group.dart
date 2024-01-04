@@ -81,6 +81,7 @@ class GroupMessage {
   final int? pid;
   final int? memberId;
   final int status;
+  final int totalCost;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -95,6 +96,7 @@ class GroupMessage {
     this.quotaConsumed,
     this.pid,
     this.memberId,
+    this.totalCost = 0,
     this.createdAt,
     this.updatedAt,
   });
@@ -111,6 +113,7 @@ class GroupMessage {
       pid: json['pid'],
       memberId: json['member_id'],
       status: json['status'] ?? 0,
+      totalCost: json['total_cost'] ?? 0,
       createdAt: DateTime.tryParse(json['CreatedAt']),
       updatedAt: DateTime.tryParse(json['UpdatedAt']),
     );
@@ -128,6 +131,7 @@ class GroupMessage {
       'pid': pid,
       'member_id': memberId,
       'status': status,
+      'total_cost': totalCost,
       'CreatedAt': createdAt?.toIso8601String(),
       'UpdatedAt': updatedAt?.toIso8601String(),
     };

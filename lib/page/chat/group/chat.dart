@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:askaide/bloc/group_chat_bloc.dart';
 import 'package:askaide/helper/ability.dart';
@@ -362,17 +363,20 @@ class _GroupChatPageState extends State<GroupChatPage> {
                 e.memberId != null ? group.group.findMember(e.memberId!) : null;
 
             return Message(
-              id: e.id,
-              Role.getRoleFromText(e.role),
-              e.message,
-              type: MessageType.getTypeFromText(e.type),
-              status: e.status,
-              refId: e.pid,
-              ts: e.createdAt,
-              avatarUrl: member?.avatarUrl,
-              senderName: member?.modelName,
-              roomId: e.groupId,
-            );
+                id: e.id,
+                Role.getRoleFromText(e.role),
+                e.message,
+                type: MessageType.getTypeFromText(e.type),
+                status: e.status,
+                refId: e.pid,
+                ts: e.createdAt,
+                avatarUrl: member?.avatarUrl,
+                senderName: member?.modelName,
+                roomId: e.groupId,
+                extra: jsonEncode({
+                  'first_letter_resp_microseconds': 0,
+                  'total_resp_microseconds': e.totalCost
+                }));
           }).toList();
 
           final messages = loadedMessages.map((e) {
