@@ -13,7 +13,6 @@ import 'package:askaide/page/component/chat/file_upload.dart';
 import 'package:askaide/page/component/chat/message_state_manager.dart';
 import 'package:askaide/page/component/chat/rating.dart';
 import 'package:askaide/page/component/dialog.dart';
-import 'package:askaide/page/component/enhanced_button.dart';
 import 'package:askaide/page/component/theme/custom_size.dart';
 import 'package:askaide/repo/api_server.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -244,8 +243,6 @@ class _ChatPreviewState extends State<ChatPreview> {
     if (extra != null && extra['rating'] != null && extra['rating'] != 0) {
       rating = extra['rating'];
     }
-
-    print('$index / ${message.id} -> $rating');
 
     // 普通消息
     return Align(

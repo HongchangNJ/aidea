@@ -374,7 +374,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
                 senderName: member?.modelName,
                 roomId: e.groupId,
                 extra: jsonEncode({
-                  'first_letter_resp_microseconds': 0,
+                  'first_letter_resp_microseconds': e.firstLetterCost,
                   'total_resp_microseconds': e.totalCost,
                   'rating': e.rating,
                 }));
