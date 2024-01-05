@@ -11,7 +11,9 @@ import 'package:askaide/page/component/attached_button_panel.dart';
 import 'package:askaide/page/component/chat/chat_share.dart';
 import 'package:askaide/page/component/chat/file_upload.dart';
 import 'package:askaide/page/component/chat/message_state_manager.dart';
+import 'package:askaide/page/component/chat/rating.dart';
 import 'package:askaide/page/component/dialog.dart';
+import 'package:askaide/page/component/enhanced_button.dart';
 import 'package:askaide/page/component/theme/custom_size.dart';
 import 'package:askaide/repo/api_server.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -31,6 +33,7 @@ class ChatPreview extends StatefulWidget {
   final List<MessageWithState> messages;
   final ScrollController? scrollController;
   final void Function(int id)? onDeleteMessage;
+  final void Function(int id, int rating)? onRatingMessage;
   final void Function()? onResetContext;
   final ChatPreviewController controller;
   final MessageStateManager stateManager;
@@ -47,6 +50,7 @@ class ChatPreview extends StatefulWidget {
     required this.messages,
     this.scrollController,
     this.onDeleteMessage,
+    this.onRatingMessage,
     this.onResetContext,
     required this.controller,
     required this.stateManager,
@@ -78,6 +82,17 @@ class _ChatPreviewState extends State<ChatPreview> {
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
     var messages = widget.messages.reversed.toList();
+
+    var showRatingIndexs = <int>[];
+    if (messages.isNotEmpty) {
+      if (messages.first.message.refId != null) {
+        for (var i = 0; i < messages.length; i++) {
+          if (messages[i].message.refId == messages.first.message.refId) {
+            showRatingIndexs.add(i);
+          }
+        }
+      }
+    }
 
     return ListView.builder(
       controller: widget.scrollController,
@@ -134,6 +149,7 @@ class _ChatPreviewState extends State<ChatPreview> {
                                   _resolveMessage(state, message),
                                   message.state,
                                   index,
+                                  showRatingIndexs.contains(index),
                                 ),
                               );
                             },
@@ -149,6 +165,7 @@ class _ChatPreviewState extends State<ChatPreview> {
                               message.message,
                               message.state,
                               index,
+                              showRatingIndexs.contains(index),
                             ),
                           ),
                   ),
@@ -180,6 +197,7 @@ class _ChatPreviewState extends State<ChatPreview> {
     Message message,
     MessageState state,
     int index,
+    bool showRating,
   ) {
     // 系统消息
     if (message.isSystem()) {
@@ -204,8 +222,8 @@ class _ChatPreviewState extends State<ChatPreview> {
         state.translateText != null &&
         state.translateText != '';
 
-    final extra = index == 0 ? message.decodeExtra() : null;
-    final extraInfo = extra != null ? extra['info'] ?? '' : '';
+    var extra = message.decodeExtra();
+    final extraInfo = extra != null && index == 0 ? extra['info'] ?? '' : '';
 
     final statFirstLetterRespMS =
         (extra != null && extra['first_letter_resp_microseconds'] != null)
@@ -220,6 +238,14 @@ class _ChatPreviewState extends State<ChatPreview> {
         '首字符耗时 ${durationFormat(statFirstLetterRespMS)}',
       if (statTotalRespMS > 0) '总耗时 ${durationFormat(statTotalRespMS)}'
     ].join('，');
+
+    // 消息评价
+    var rating = 0;
+    if (extra != null && extra['rating'] != null && extra['rating'] != 0) {
+      rating = extra['rating'];
+    }
+
+    print('$index / ${message.id} -> $rating');
 
     // 普通消息
     return Align(
@@ -490,7 +516,28 @@ class _ChatPreviewState extends State<ChatPreview> {
                               );
                             },
                           ),
-                        )
+                        ),
+                      if (message.role == Role.receiver &&
+                          rating == 0 &&
+                          widget.onRatingMessage != null &&
+                          showRating &&
+                          !message.statusPending() &&
+                          message.isReady)
+                        Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.all(10),
+                          child: RatingBox(
+                            onRating: (rating) {
+                              widget.onRatingMessage!(message.id!, rating);
+
+                              setState(() {
+                                extra ??= {};
+                                extra['rating'] = rating;
+                                message.setExtra(extra);
+                              });
+                            },
+                          ),
+                        ),
                     ],
                   ),
                 ),

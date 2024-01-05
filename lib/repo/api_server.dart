@@ -1865,4 +1865,34 @@ class APIServer {
       forceRefresh: !cache,
     );
   }
+
+  /// 消息评分 ////////////////////////////////////////////////////////////////////
+  /// 更新消息评分
+  Future<void> updateMessageRating({
+    required int messageId,
+    required int rating,
+  }) async {
+    return sendPostRequest(
+      '/v1/messages/$messageId/rating',
+      (resp) {},
+      formData: {
+        'rating': rating,
+      },
+    );
+  }
+
+  /// 更新群聊消息评分
+  Future<void> updateGroupMessageRating({
+    required int groupId,
+    required int messageId,
+    required int rating,
+  }) async {
+    return sendPostRequest(
+      '/v1/group-chat/$groupId/messages/$messageId/rating',
+      (resp) {},
+      formData: {
+        'rating': rating,
+      },
+    );
+  }
 }

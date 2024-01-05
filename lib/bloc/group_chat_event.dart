@@ -59,3 +59,11 @@ class GroupChatDeleteEvent extends GroupChatEvent {
 
   GroupChatDeleteEvent(this.groupId, this.messageId);
 }
+
+class GroupChatRatingEvent extends GroupChatEvent {
+  final int groupId;
+  final int messageId;
+  final int rating;
+
+  GroupChatRatingEvent(this.groupId, this.messageId, this.rating);
+}

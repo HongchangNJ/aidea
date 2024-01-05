@@ -108,6 +108,40 @@ class ChatMessageDataProvider {
     });
   }
 
+  Future<void> updateMessagePartUnsafe(
+    int id,
+    List<MessagePart> parts,
+  ) async {
+    var kvs = <String, Object?>{};
+    for (var element in parts) {
+      kvs[element.key] = element.value;
+    }
+
+    return conn.transaction((txn) async {
+      await txn.update(
+        'chat_message',
+        kvs,
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    });
+  }
+
+  Future<Message?> getMessage(int id) async {
+    List<Map<String, Object?>> messages = await conn.query(
+      'chat_message',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+
+    if (messages.isEmpty) {
+      return null;
+    }
+
+    return Message.fromMap(messages.first);
+  }
+
   Future<void> removeMessage(int roomId, List<int> ids) async {
     var placeholders = List.generate(ids.length, (index) => '?').join(',');
     ids.add(roomId);

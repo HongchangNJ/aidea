@@ -157,6 +157,18 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
       messages.removeWhere((msg) => msg.id == event.messageId);
       emit(GroupChatMessagesLoaded(messages: messages));
     });
+
+    // 更新聊天消息评分
+    on<GroupChatRatingEvent>((event, emit) async {
+      await APIServer().updateGroupMessageRating(
+        groupId: event.groupId,
+        messageId: event.messageId,
+        rating: event.rating,
+      );
+
+      await refreshGroupMessages(event.groupId, forceRefresh: true);
+      emit(GroupChatMessagesLoaded(messages: messages));
+    });
   }
 
   refreshGroupMessages(

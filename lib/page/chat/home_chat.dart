@@ -461,6 +461,12 @@ class _HomeChatPageState extends State<HomeChatPage> {
       onDeleteMessage: (id) {
         handleDeleteMessage(context, id, chatHistoryId: chatId);
       },
+      onRatingMessage: (id, rating) {
+        context.read<ChatMessageBloc>().add(ChatMessageRatingEvent(
+            id: id, rating: rating, chatHistoryId: chatId));
+
+        showSuccessMessage('感谢您的反馈');
+      },
       onResetContext: () => handleResetContext(context),
       onResentEvent: (message, index) {
         _scrollController.animateTo(0,

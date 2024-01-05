@@ -315,6 +315,13 @@ class _RoomChatPageState extends State<RoomChatPage> {
             onDeleteMessage: (id) {
               handleDeleteMessage(context, id);
             },
+            onRatingMessage: (id, rating) {
+              context
+                  .read<ChatMessageBloc>()
+                  .add(ChatMessageRatingEvent(id: id, rating: rating));
+
+              showSuccessMessage('感谢您的反馈');
+            },
             onResetContext: () => handleResetContext(context),
             onSpeakEvent: (message) {
               _audioPlayerController.playAudio(message.text);

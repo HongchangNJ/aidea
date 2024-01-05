@@ -92,6 +92,19 @@ class ChatMessageRepository {
     return await _chatMsgDataProvider.updateMessagePart(roomId, id, parts);
   }
 
+  /// 部分更新消息（不安全）
+  Future<void> updateMessagePartUnsafe(
+    int id,
+    List<MessagePart> parts,
+  ) async {
+    return await _chatMsgDataProvider.updateMessagePartUnsafe(id, parts);
+  }
+
+  /// 获取消息
+  Future<Message?> getMessage(int id) async {
+    return await _chatMsgDataProvider.getMessage(id);
+  }
+
   /// 删除消息
   Future<void> removeMessage(int roomId, List<int> ids) async {
     return await _chatMsgDataProvider.removeMessage(roomId, ids);

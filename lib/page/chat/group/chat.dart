@@ -375,7 +375,8 @@ class _GroupChatPageState extends State<GroupChatPage> {
                 roomId: e.groupId,
                 extra: jsonEncode({
                   'first_letter_resp_microseconds': 0,
-                  'total_resp_microseconds': e.totalCost
+                  'total_resp_microseconds': e.totalCost,
+                  'rating': e.rating,
                 }));
           }).toList();
 
@@ -430,6 +431,13 @@ class _GroupChatPageState extends State<GroupChatPage> {
             },
             onDeleteMessage: (id) {
               handleDeleteMessage(context, id);
+            },
+            onRatingMessage: (id, rating) {
+              context
+                  .read<GroupChatBloc>()
+                  .add(GroupChatRatingEvent(widget.groupId, id, rating));
+
+              showSuccessMessage('感谢您的反馈');
             },
             onResetContext: () => handleResetContext(context),
             onSpeakEvent: (message) {

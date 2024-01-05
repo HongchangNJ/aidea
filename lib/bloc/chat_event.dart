@@ -32,3 +32,15 @@ class ChatMessageDeleteEvent extends ChatMessageEvent {
   final int? chatHistoryId;
   ChatMessageDeleteEvent(this.ids, {this.chatHistoryId});
 }
+
+class ChatMessageRatingEvent extends ChatMessageEvent {
+  final int id;
+  final int rating;
+  final int? chatHistoryId;
+
+  ChatMessageRatingEvent({
+    required this.id,
+    required this.rating,
+    this.chatHistoryId,
+  });
+}

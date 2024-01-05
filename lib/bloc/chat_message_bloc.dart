@@ -39,10 +39,49 @@ class ChatMessageBloc extends BlocExt<ChatMessageEvent, ChatMessageState> {
     on<ChatMessageClearAllEvent>(_clearAllEventHandler);
     on<ChatMessageBreakContextEvent>(_breakContextEventHandler);
     on<ChatMessageDeleteEvent>(_deleteMessageEventHandler);
+    on<ChatMessageRatingEvent>(_updateMessageRatingEventHandler);
   }
 
   Future<void> _deleteMessageEventHandler(event, emit) async {
     await chatMsgRepo.removeMessage(roomId, event.ids);
+
+    ChatHistory? his;
+    if (event.chatHistoryId != null && event.chatHistoryId! > 0) {
+      his = await chatMsgRepo.getChatHistory(event.chatHistoryId!);
+    }
+
+    emit(ChatMessagesLoaded(
+      await chatMsgRepo.getRecentMessages(
+        roomId,
+        userId: APIServer().localUserID(),
+        chatHistoryId: event.chatHistoryId,
+      ),
+      chatHistory: his,
+    ));
+  }
+
+  Future<void> _updateMessageRatingEventHandler(event, emit) async {
+    final msg = await chatMsgRepo.getMessage(event.id);
+    if (msg == null) {
+      return;
+    }
+
+    var extra = msg.decodeExtra();
+    extra ??= {};
+
+    extra['rating'] = event.rating;
+    await chatMsgRepo.updateMessagePartUnsafe(event.id, [
+      MessagePart('extra', jsonEncode(extra)),
+    ]);
+
+    // 异步更新服务端评分
+    if (Ability().isUserLogon() && msg.serverId != null) {
+      // 注意：这里不需要等待，直接异步处理就好
+      APIServer().updateMessageRating(
+        messageId: msg.serverId!,
+        rating: event.rating,
+      );
+    }
 
     ChatHistory? his;
     if (event.chatHistoryId != null && event.chatHistoryId! > 0) {
