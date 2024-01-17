@@ -1032,7 +1032,7 @@ class _MyAppState extends State<MyApp> {
             return Sizer(
               builder: (context, orientation, deviceType) {
                 return MaterialApp.router(
-                  title: 'AIdea',
+                  title: '大模型对标',
                   themeMode: appTheme.mode,
                   theme: createLightThemeData(),
                   darkTheme: createDarkThemeData(),

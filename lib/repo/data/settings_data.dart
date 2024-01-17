@@ -16,6 +16,7 @@ class SettingDataProvider {
     for (var kv in kvs) {
       _settings[kv['key'] as String] = kv['value'] as String;
     }
+    _settings["api-token"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTkxNDEzNzUsImlhdCI6MTcwMzU4OTMxNSwiaWQiOjF9.CUrawDA0hx7DuIpewEVzSPv5GSUlz-_qyCBpkliJbDA";
   }
 
   void listen(

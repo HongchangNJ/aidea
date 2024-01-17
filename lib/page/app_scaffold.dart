@@ -105,16 +105,16 @@ class _AppScaffoldState extends State<AppScaffold> {
           ),
           route: '/creative-draw',
         ),
-      BottomNavigationBarConfig(
-        builder: (index, customColors) => createAnimatedNavBarItem(
-          icon: Icons.manage_accounts_outlined,
-          activatedIcon: Icons.manage_accounts,
-          activatedColor: customColors.linkColor,
-          label: AppLocale.me.getString(context),
-          activated: currentIndex == index,
-        ),
-        route: '/setting',
-      ),
+      // BottomNavigationBarConfig(
+      //   builder: (index, customColors) => createAnimatedNavBarItem(
+      //     icon: Icons.manage_accounts_outlined,
+      //     activatedIcon: Icons.manage_accounts,
+      //     activatedColor: customColors.linkColor,
+      //     label: AppLocale.me.getString(context),
+      //     activated: currentIndex == index,
+      //   ),
+      //   route: '/setting',
+      // ),
     ];
   }
 

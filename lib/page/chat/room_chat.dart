@@ -177,7 +177,7 @@ class _RoomChatPageState extends State<RoomChatPage> {
                         if (matched != null &&
                             matched.leftCount > 0 &&
                             matched.maxCount > 0) {
-                          hintText += '（今日还可免费畅享${matched.leftCount}次）';
+                          // hintText += '（今日还可免费畅享${matched.leftCount}次）';
                         }
                       }
 
@@ -285,10 +285,10 @@ class _RoomChatPageState extends State<RoomChatPage> {
           if (loadedMessages.isEmpty) {
             return Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-              child: EmptyPreview(
-                examples: room.examples ?? [],
-                onSubmit: _handleSubmit,
-              ),
+              // child: EmptyPreview(
+              //   examples: room.examples ?? [],
+              //   onSubmit: _handleSubmit,
+              // ),
             );
           }
 

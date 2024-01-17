@@ -76,7 +76,7 @@ class _RoomsPageState extends State<RoomsPage> {
                     EnhancedPopupMenu(
                       items: [
                         EnhancedPopupMenuItem(
-                          title: '创建数字人',
+                          title: '发起单聊',
                           icon: Icons.person_add_alt_outlined,
                           onTap: (p0) {
                             context.push('/create-room').whenComplete(() {

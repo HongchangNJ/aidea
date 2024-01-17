@@ -29,6 +29,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:askaide/helper/logger.dart';
 
 class GroupChatPage extends StatefulWidget {
   final SettingRepository setting;
@@ -361,7 +362,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
           final loadedMessages = state.messages.map((e) {
             var member =
                 e.memberId != null ? group.group.findMember(e.memberId!) : null;
-
+            Logger.instance.i('e.firstLetterCost：${e.firstLetterCost}, e.total: ${e.totalCost}');
             return Message(
                 id: e.id,
                 Role.getRoleFromText(e.role),

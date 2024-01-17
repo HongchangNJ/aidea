@@ -39,13 +39,13 @@ class HelpTips extends StatelessWidget {
     return RichText(
         text: TextSpan(
       children: [
-        TextSpan(
+        /*TextSpan(
           text: '想要开启新的聊天？试试 ',
           style: TextStyle(
             color: customColors.dialogDefaultTextColor,
             fontSize: 12,
           ),
-        ),
+        ),*/
         TextSpan(
             text: AppLocale.newChat.getString(context),
             style: TextStyle(
@@ -62,13 +62,13 @@ class HelpTips extends StatelessWidget {
     return RichText(
         text: TextSpan(
       children: [
-        TextSpan(
+        /*TextSpan(
           text: '想要更多内容？试着对我说 ',
           style: TextStyle(
             color: customColors.dialogDefaultTextColor,
             fontSize: 12,
           ),
-        ),
+        ),*/
         TextSpan(
             text: AppLocale.continueMessage.getString(context),
             style: TextStyle(
